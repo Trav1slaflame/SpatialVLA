@@ -20,12 +20,12 @@ if __name__ == "__main__":
     images = [image] * args.num_images
     prompt = "What action should the robot take to pick the cup?"
     inputs = processor(images=images, text=prompt, unnorm_key="bridge_orig/1.0.0", return_tensors="pt")
-    print(inputs)
+    print("preprocessed inputs to model: ", inputs)
     
     generation_outputs = model.predict_action(inputs)
     print(generation_outputs, processor.batch_decode(generation_outputs))
 
     actions = processor.decode_actions(generation_outputs, unnorm_key="bridge_orig/1.0.0")
-    print(actions)
+    print("decoded actions: ", actions)
     
     print("DONE!")
