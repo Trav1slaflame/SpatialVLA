@@ -28,6 +28,15 @@ from data.utils.data_utils import (
 )
 
 
+def xarm_sft_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Applies to real xarm sft dataset.
+
+    Note =>> WIP!
+    """
+    return trajectory
+
+
 def bridge_oxe_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     """
     Applies to version of Bridge V2 in Open X-Embodiment mixture.
@@ -1084,4 +1093,7 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "libero_object_no_noops/1.0.0": libero_dataset_transform,
     "libero_goal_no_noops/1.0.0": libero_dataset_transform,
     "libero_10_no_noops/1.0.0": libero_dataset_transform,
+    ### Real Xarm sft datasets
+    "lift_the_yellow_pepper_rlds/1.0.0": xarm_sft_dataset_transform,
+    "pick_banana_and_place_on_red_plate_rlds/1.0.0": xarm_sft_dataset_transform,
 }

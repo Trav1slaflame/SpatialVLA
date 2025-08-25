@@ -50,6 +50,7 @@ class OpenXIterableDataset(IterableDataset):
             mixture_spec = OXE_NAMED_MIXTURES[self.data_mix]
         else:
             mixture_spec = [(os.path.join(self.data_mix, "1.0.0"), 1.0)]
+        # NOTE: setup loaded data modalities
         per_dataset_kwargs, weights = get_oxe_dataset_kwargs_and_weights(
             self.data_root_dir,
             mixture_spec,
@@ -75,7 +76,8 @@ class OpenXIterableDataset(IterableDataset):
             dataset_kwargs_list=per_dataset_kwargs,
             shuffle_buffer_size=shuffle_buffer_size,
             sample_weights=weights,
-            balance_weights=True,
+            # TODO: check whether need to balance sampling weights between datasets!!!
+            balance_weights=False,
             traj_transform_threads=len(mixture_spec) * tsfm_thread_muti,
             traj_read_threads=len(mixture_spec) * read_thread_muti,
             train=self.is_train,
