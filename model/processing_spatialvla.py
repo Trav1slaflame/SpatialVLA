@@ -183,6 +183,8 @@ class SpatialVLAProcessor(ProcessorMixin):
             **output_kwargs["text_kwargs"],
         )
 
+        # debug
+        # print("unnorm_key when call SpatialVLAProcessor: ", unnorm_key)
         intrinsic = self.dataset_intrinsics[unnorm_key] if unnorm_key in self.dataset_intrinsics else self.dataset_intrinsics["default"]
         return_data = {**inputs, "pixel_values": pixel_values, "intrinsic": intrinsic}
 
@@ -233,9 +235,12 @@ class SpatialVLAProcessor(ProcessorMixin):
         predicted_action_token_ids = predicted_action_token_ids.reshape(-1, action_token_num)
         normalized_action_chunks = self.action_tokenizer.decode_token_ids_to_actions(predicted_action_token_ids)
 
+        # debug
+        # print("input unnorm_key when call decode_actions: ", unnorm_key)
         if unnorm_key is None:
             logger.warning(f"unnorm_key {unnorm_key} is not in statistics, use next one")
             unnorm_key = next(self.statistics.keys())
+        # print("unnorm_key after process: ", unnorm_key)
         action_norm_stats = self.statistics[unnorm_key]["action"]
 
         action_dim = len(action_norm_stats["q01"])
