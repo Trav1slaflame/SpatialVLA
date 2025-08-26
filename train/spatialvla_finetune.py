@@ -196,6 +196,7 @@ def main():
     # 1. initializing models and load tokenizer
     _processor = SpatialVLAProcessor.from_pretrained(model_args.model_name_or_path, local_files_only=True)
     tokenizer = _processor.tokenizer
+    # NOTE: setup training acc
     torch_dtype = torch.bfloat16 if training_args.bf16 else torch.float32
     
     logger.info("Loading SpatialVLA Model...")

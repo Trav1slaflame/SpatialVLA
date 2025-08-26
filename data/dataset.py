@@ -77,7 +77,7 @@ class OpenXIterableDataset(IterableDataset):
             shuffle_buffer_size=shuffle_buffer_size,
             sample_weights=weights,
             # TODO: check whether need to balance sampling weights between datasets!!!
-            balance_weights=False,
+            balance_weights=True,
             traj_transform_threads=len(mixture_spec) * tsfm_thread_muti,
             traj_read_threads=len(mixture_spec) * read_thread_muti,
             train=self.is_train,
