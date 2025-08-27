@@ -34,6 +34,7 @@ def xarm_sft_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
 
     Note =>> WIP!
     """
+    # print("lang in rlds dataset: ", trajectory["language_instruction"])
     return trajectory
 
 

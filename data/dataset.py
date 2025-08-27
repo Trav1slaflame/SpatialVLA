@@ -129,7 +129,10 @@ class OpenXIterableDataset(IterableDataset):
             pixel_values_seq += [image] # [c h w]
 
         actions = torch.from_numpy(data_item["action"])  # (t e)
+        # print("check actions: ", actions)
         lang = data_item["task"]["language_instruction"].lower()
+        # print("check lang: ", lang)
+        # print("check lang in dataset: ", data_item["task"]["language_instruction"])
         if isinstance(lang, bytes): lang = lang.decode()
         
         # TODO: move to processor
