@@ -173,3 +173,4 @@ petrel_client
 huggingface/tmp
 pretrained
 /wandb/
+/ckpts/

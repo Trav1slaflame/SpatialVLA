@@ -1,3 +1,4 @@
+import time
 import argparse
 from pathlib import Path
 import torch
@@ -19,13 +20,21 @@ if __name__ == "__main__":
     image = Image.open("test/example.png").convert("RGB")
     images = [image] * args.num_images
     prompt = "What action should the robot take to pick the cup?"
+    
+    start = time.time()
     inputs = processor(images=images, text=prompt, unnorm_key="bridge_orig/1.0.0", return_tensors="pt")
     print("preprocessed inputs to model: ", inputs)
+    print("**** processor infer time: ", time.time() - start)
     
+    start1 = time.time()
     generation_outputs = model.predict_action(inputs)
+    print("**** model.predict_action time: ", time.time() - start1)
     print(generation_outputs, processor.batch_decode(generation_outputs))
 
+    start2 = time.time()
     actions = processor.decode_actions(generation_outputs, unnorm_key="bridge_orig/1.0.0")
+    print("**** processor.decode_actions time: ", time.time() - start2)
     print("decoded actions: ", actions)
     
+    print("**** spatialvla infer time: ", time.time() - start)
     print("DONE!")
