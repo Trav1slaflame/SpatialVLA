@@ -14,6 +14,11 @@ OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
         ("lift_the_yellow_pepper_rlds/1.0.0", 1.0),             # Xarm real-robot sft Dataset-debugging
         ("pick_banana_and_place_on_red_plate_rlds/1.0.0", 1.0),
     ],
+
+    "real_debug_set_single": [
+        # ("lift_the_yellow_pepper_rlds/1.0.0", 1.0),             
+        ("pick_banana_and_place_on_red_plate_rlds/1.0.0", 1.0),
+    ],
     
     # === Bridge V2 Dataset ===
     "toto": [
