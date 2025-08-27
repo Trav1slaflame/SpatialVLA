@@ -27,7 +27,7 @@ shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuff
 lr=2e-5
 epoch=30
 save_steps=${save_steps:-10000}
-action_forward_steps=4
+action_forward_steps=9
 
 cur_time=$(date "+%H-%M-%S")
 date_dir=$(date "+%Y-%m-%d")
@@ -52,7 +52,7 @@ export NCCL_IB_DISABLE=0
 export NCCL_DEBUG=INFO
 export NCCL_ASYNC_ERROR_HANDLING=1
 
-MASTER_ADDR=10.136.113.70
+MASTER_ADDR=10.136.112.66
 MASTER_PORT=6245
 NODE_ID=3
 TORCH_RUN_ARGS=${TORCH_RUN_ARGS:-"--nnodes $NODES --node_rank $NODE_ID --nproc-per-node $GPUS_PER_NODE --master_addr $MASTER_ADDR --master_port $MASTER_PORT"}
