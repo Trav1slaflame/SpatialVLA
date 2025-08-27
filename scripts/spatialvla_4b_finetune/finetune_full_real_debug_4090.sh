@@ -19,7 +19,7 @@ PER_DEVICE_BATCH_SIZE=${PER_DEVICE_BATCH_SIZE:-32}
 BATCH_SIZE=${BATCH_SIZE:-$((GPUS * PER_DEVICE_BATCH_SIZE))}
 GRADIENT_ACC=$((BATCH_SIZE / PER_DEVICE_BATCH_SIZE / GPUS))
 
-mixture=real_debug_set
+mixture=real_debug_set_single
 mixture=${mixture:-oxe_magic_soup_plus}
 NUM_WORKERS=${NUM_WORKERS:-1}
 shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuffling, we use 131072 in pretrain

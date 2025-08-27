@@ -34,7 +34,10 @@ def xarm_sft_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
 
     Note =>> WIP!
     """
-    # print("lang in rlds dataset: ", trajectory["language_instruction"])
+    # debug: check lang values
+    # lang_tensor = trajectory["language_instruction"]
+    # tf.print("Language instruction:", lang_tensor)
+    
     return trajectory
 
 
