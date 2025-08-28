@@ -37,7 +37,7 @@ model_name_or_path=/mnt/hdfs/public/zhengshen/vlm_ckpts/spatialvla_ckpts/pretrai
 note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
 OUTPUT_DIR=${resume_path:-outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
 mkdir -p $OUTPUT_DIR
-wandb_run_name=xarm_sft_${date_dir}_${cur_time}_${mixture}_${note}
+wandb_run_name=xarm_sft_h100-debug_${date_dir}_${cur_time}_${mixture}_${note}
 
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 export TF_CPP_MIN_LOG_LEVEL=3
