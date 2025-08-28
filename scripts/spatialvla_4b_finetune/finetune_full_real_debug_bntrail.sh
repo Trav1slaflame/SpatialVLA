@@ -19,7 +19,7 @@ PER_DEVICE_BATCH_SIZE=${PER_DEVICE_BATCH_SIZE:-16}
 BATCH_SIZE=${BATCH_SIZE:-$((GPUS * PER_DEVICE_BATCH_SIZE))}
 GRADIENT_ACC=$((BATCH_SIZE / PER_DEVICE_BATCH_SIZE / GPUS))
 
-mixture=real_debug_set_single
+mixture=real_debug_set
 mixture=${mixture:-oxe_magic_soup_plus}
 NUM_WORKERS=${NUM_WORKERS:-16}
 shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuffling, we use 131072 in pretrain
@@ -27,7 +27,7 @@ shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuff
 lr=2e-5
 epoch=30
 save_steps=${save_steps:-10000}
-action_forward_steps=12
+action_forward_steps=3
 
 cur_time=$(date "+%H-%M-%S")
 date_dir=$(date "+%Y-%m-%d")
@@ -36,9 +36,9 @@ date_dir=$(date "+%Y-%m-%d")
 model_name_or_path=/mnt/bn/zhengshen-lq2/spatialvla_ckpts/spatialvla-4b-224-pt
 note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
 # note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_real-cam-intri_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
-OUTPUT_DIR=${resume_path:-/mnt/bn/zhengshen-lq2/spatialvla_ckpts/xarm_sft/base_tasks_debug/outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
+OUTPUT_DIR=${resume_path:-/mnt/bn/zhengshen-lq2/spatialvla_ckpts/xarm_sft/base_tasks_debug_data_fixed/outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
 mkdir -p $OUTPUT_DIR
-wandb_run_name=xarm_sft_${date_dir}_${cur_time}_${mixture}_${note}
+wandb_run_name=xarm_sft_data-fixed_${date_dir}_${cur_time}_${mixture}_${note}
 
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 export TF_CPP_MIN_LOG_LEVEL=3
@@ -55,7 +55,7 @@ export NCCL_ASYNC_ERROR_HANDLING=1
 
 MASTER_ADDR=10.136.113.70
 MASTER_PORT=6245
-NODE_ID=0
+NODE_ID=3
 TORCH_RUN_ARGS=${TORCH_RUN_ARGS:-"--nnodes $NODES --node_rank $NODE_ID --nproc-per-node $GPUS_PER_NODE --master_addr $MASTER_ADDR --master_port $MASTER_PORT"}
 
 torchrun $TORCH_RUN_ARGS \
