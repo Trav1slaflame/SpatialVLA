@@ -33,7 +33,7 @@ cur_time=$(date "+%H-%M-%S")
 date_dir=$(date "+%Y-%m-%d")
 
 # resume training from ckpt
-model_name_or_path=/mnt/bn/zhengshen-lq2/spatialvla_ckpts/spatialvla-4b-224-pt
+model_name_or_path=/mnt/hdfs/public/zhengshen/vlm_ckpts/spatialvla_ckpts/pretrained/spatialvla-4b-224-pt
 note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
 OUTPUT_DIR=${resume_path:-outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
 mkdir -p $OUTPUT_DIR
@@ -62,7 +62,7 @@ torchrun $TORCH_RUN_ARGS \
   --model_name_or_path ${model_name_or_path} \
   ${ADAPT_ARGS} \
   --ignore_data_skip True \
-  --data_root_dir /mnt/bn/zhengshen-lq2/real_xarm_sft_datasets/real_base_task_rlds_debug_datasets \
+  --data_root_dir /opt/tiger/robogen/real_base_task_rlds_debug_datasets \
   --data_mix ${mixture} \
   --shuffle_buffer_size ${shuffle_buffer_size} \
   --obs_backward_steps 0 \
