@@ -27,15 +27,15 @@ shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuff
 lr=2e-5
 epoch=30
 save_steps=${save_steps:-10000}
-action_forward_steps=9
+action_forward_steps=4
 
 cur_time=$(date "+%H-%M-%S")
 date_dir=$(date "+%Y-%m-%d")
 
 # resume training from ckpt
 model_name_or_path=/mnt/hdfs/public/zhengshen/vlm_ckpts/spatialvla_ckpts/pretrained/spatialvla-4b-224-pt
-note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
-# note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_real-cam-intri_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
+# note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
+note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_real-cam-intri_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
 OUTPUT_DIR=${resume_path:-outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
 mkdir -p $OUTPUT_DIR
 wandb_run_name=xarm_sft_h100_${date_dir}_${cur_time}_${mixture}_${note}
@@ -53,7 +53,7 @@ export NCCL_IB_DISABLE=0
 export NCCL_DEBUG=INFO
 export NCCL_ASYNC_ERROR_HANDLING=1
 
-MASTER_ADDR=10.117.192.77
+MASTER_ADDR=10.117.192.60
 MASTER_PORT=6285
 NODE_ID=0
 TORCH_RUN_ARGS=${TORCH_RUN_ARGS:-"--nnodes $NODES --node_rank $NODE_ID --nproc-per-node $GPUS_PER_NODE --master_addr $MASTER_ADDR --master_port $MASTER_PORT"}
