@@ -315,6 +315,28 @@ def main():
     # build processor
     statistic = train_dataset.ds_stats_pc
     _processor.statistics.update(statistic)
+
+    print("**************** check original _processor.intrinsic_config: ", _processor.intrinsic_config)
+    # NOTE: update xarm static realsense d435 intrinsic to _processor.intrinsic_config
+    # new_width = 640
+    # new_height = 480
+    # new_fx = 607.614
+    # new_fy = 607.76
+    # new_cx = 331.137
+    # new_cy = 236.033
+    # new_intrinsic_matrix = [
+    #     [new_fx, 0.0, new_cx],
+    #     [0.0, new_fy, new_cy],
+    #     [0.0, 0.0, 1.0]
+    # ]
+    # new_config = {
+    #     'height': new_height,
+    #     'intrinsic': new_intrinsic_matrix,
+    #     'width': new_width
+    # }
+    # _processor.intrinsic_config['default'] = new_config
+    # print("**************** check updated _processor.intrinsic_config: ", _processor.intrinsic_config)
+
     processor = SpatialVLAProcessor(
         image_processor=_processor.image_processor,
         tokenizer=tokenizer,

@@ -87,6 +87,8 @@ class SpatialVLAProcessor(ProcessorMixin):
         self.action_chunk_size = action_chunk_size
         self.dataset_intrinsics = {}
         height, width = image_processor.size["height"], image_processor.size["width"]
+        print("image_processor height: ", height)
+        print("image_processor width: ", width)
 
         # scale intrinsic matrix
         for k, v in intrinsic_config.items():
@@ -184,8 +186,10 @@ class SpatialVLAProcessor(ProcessorMixin):
         )
 
         # debug
-        # print("unnorm_key when call SpatialVLAProcessor: ", unnorm_key)
+        # print("unnorm_key when call SpatialVLAProcessor: ", unnorm_key) "None"
+        # print("**************** check intrinsic val after scale: ", self.dataset_intrinsics)
         intrinsic = self.dataset_intrinsics[unnorm_key] if unnorm_key in self.dataset_intrinsics else self.dataset_intrinsics["default"]
+        # print("**************** check intrinsic val in processor: ", intrinsic)
         return_data = {**inputs, "pixel_values": pixel_values, "intrinsic": intrinsic}
 
         if return_token_type_ids:

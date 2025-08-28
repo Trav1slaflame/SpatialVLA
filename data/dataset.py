@@ -123,9 +123,21 @@ class OpenXIterableDataset(IterableDataset):
     def multi_modal_get_item(self, data_item):
         pixel_values_seq = []
         
+        #debug
+        # save_dir = "outputs/debug_frames"
+        # os.makedirs(save_dir, exist_ok=True)
+        # print("check dataset's img shape: ", data_item["observation"]["image_primary"].shape)
         # TODO: add mutiple image inputs support (processor, model)
         for image_primary in data_item["observation"]["image_primary"]:  # (t h w c)
+        # for idx, image_primary in enumerate(data_item["observation"]["image_primary"]):  # (t h w c)
+            # print("check image_primary shape: ", image_primary.shape)
             image = Image.fromarray(image_primary)
+
+            # debug
+            # save_path = os.path.join(save_dir, f"frame_{idx:04d}.png")  # 格式化为 0000, 0001...
+            # image.save(save_path)
+            # print(f"saved debug imgs to: {save_path}")
+
             pixel_values_seq += [image] # [c h w]
 
         actions = torch.from_numpy(data_item["action"])  # (t e)
@@ -134,6 +146,7 @@ class OpenXIterableDataset(IterableDataset):
         # print("check lang: ", lang)
         # print("check lang in dataset: ", data_item["task"]["language_instruction"])
         if isinstance(lang, bytes): lang = lang.decode()
+        # print("lang after process: ", lang)
         
         # TODO: move to processor
         ret = self.vla_processor(
