@@ -1,0 +1,94 @@
+set -x
+
+DEBUG=false
+if [ "$DEBUG" = true ]; then
+  GPUS=1
+  GPUS_PER_NODE=1
+  PER_DEVICE_BATCH_SIZE=2
+  shuffle_buffer_size=2
+  mixture=real_debug_set
+  NUM_WORKERS=0
+  TORCH_RUN_ARGS="--standalone --nnodes=1"
+  save_steps=50
+fi
+
+GPUS=${GPUS:-32}
+GPUS_PER_NODE=${GPUS_PER_NODE:-8}
+NODES=$((GPUS / GPUS_PER_NODE))
+PER_DEVICE_BATCH_SIZE=${PER_DEVICE_BATCH_SIZE:-16}
+BATCH_SIZE=${BATCH_SIZE:-$((GPUS * PER_DEVICE_BATCH_SIZE))}
+GRADIENT_ACC=$((BATCH_SIZE / PER_DEVICE_BATCH_SIZE / GPUS))
+
+mixture=real_debug_set
+mixture=${mixture:-oxe_magic_soup_plus}
+NUM_WORKERS=${NUM_WORKERS:-16}
+shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuffling, we use 131072 in pretrain
+
+lr=2e-5
+epoch=30
+save_steps=${save_steps:-10000}
+action_forward_steps=12
+
+cur_time=$(date "+%H-%M-%S")
+date_dir=$(date "+%Y-%m-%d")
+
+# resume training from ckpt
+model_name_or_path=/mnt/bn/zhengshen-lq2/spatialvla_ckpts/spatialvla-4b-224-pt
+note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
+# note=$(basename $model_name_or_path)_fwd$((action_forward_steps + 1))_real-cam-intri_lr${lr}_bs${PER_DEVICE_BATCH_SIZE}_node$((GPUS / GPUS_PER_NODE))_gpu${GPUS}
+OUTPUT_DIR=${resume_path:-outputs/spatialvla_4b_finetune/$date_dir/${cur_time}_${mixture}_${note}}
+mkdir -p $OUTPUT_DIR
+wandb_run_name=xarm_sft_${date_dir}_${cur_time}_${mixture}_${note}
+
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+export TF_CPP_MIN_LOG_LEVEL=3
+# export LD_PRELOAD=../libtcmalloc.so.4.5.3 # optional, for better memory management
+# export TRITON_CACHE_DIR=~/.triton
+
+cp $(realpath "$0") ${OUTPUT_DIR}
+
+export LAUNCHER="pytorch"
+export NCCL_SOCKET_IFNAME=eth0
+export NCCL_IB_DISABLE=0
+export NCCL_DEBUG=INFO
+export NCCL_ASYNC_ERROR_HANDLING=1
+
+MASTER_ADDR=10.136.113.70
+MASTER_PORT=6245
+NODE_ID=0
+TORCH_RUN_ARGS=${TORCH_RUN_ARGS:-"--nnodes $NODES --node_rank $NODE_ID --nproc-per-node $GPUS_PER_NODE --master_addr $MASTER_ADDR --master_port $MASTER_PORT"}
+
+torchrun $TORCH_RUN_ARGS \
+  train/spatialvla_finetune.py \
+  --model_name_or_path ${model_name_or_path} \
+  ${ADAPT_ARGS} \
+  --ignore_data_skip True \
+  --data_root_dir /mnt/bn/zhengshen-lq2/real_xarm_sft_datasets/real_base_task_rlds_debug_datasets \
+  --data_mix ${mixture} \
+  --shuffle_buffer_size ${shuffle_buffer_size} \
+  --obs_backward_steps 0 \
+  --obs_backward_delta 1 \
+  --action_forward_steps ${action_forward_steps} \
+  --flash_attn True \
+  --output_dir ${OUTPUT_DIR} \
+  --overwrite_output_dir False \
+  --freeze_vision_tower False \
+  --dataloader_num_workers ${NUM_WORKERS} \
+  --bf16 True \
+  --tf32 True \
+  --num_train_epochs ${epoch} \
+  --per_device_train_batch_size ${PER_DEVICE_BATCH_SIZE} \
+  --gradient_accumulation_steps ${GRADIENT_ACC} \
+  --save_strategy epoch \
+  --save_total_limit 5 \
+  --learning_rate ${lr} \
+  --weight_decay 0.0 \
+  --warmup_ratio 0.005 \
+  --lr_scheduler_type linear \
+  --logging_steps 50 \
+  --do_train True \
+  --grad_checkpoint True \
+  --deepspeed scripts/zero1.json \
+  --report_to wandb \
+  --run_name ${wandb_run_name} \
+  --log_level warning
