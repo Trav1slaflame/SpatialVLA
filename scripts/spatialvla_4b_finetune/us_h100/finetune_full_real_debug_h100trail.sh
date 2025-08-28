@@ -19,7 +19,7 @@ PER_DEVICE_BATCH_SIZE=${PER_DEVICE_BATCH_SIZE:-16}
 BATCH_SIZE=${BATCH_SIZE:-$((GPUS * PER_DEVICE_BATCH_SIZE))}
 GRADIENT_ACC=$((BATCH_SIZE / PER_DEVICE_BATCH_SIZE / GPUS))
 
-mixture=real_debug_set
+mixture=real_debug_set_single
 mixture=${mixture:-oxe_magic_soup_plus}
 NUM_WORKERS=${NUM_WORKERS:-16}
 shuffle_buffer_size=${shuffle_buffer_size:-8192} # large buffer for better shuffling, we use 131072 in pretrain
@@ -53,7 +53,7 @@ export NCCL_IB_DISABLE=0
 export NCCL_DEBUG=INFO
 export NCCL_ASYNC_ERROR_HANDLING=1
 
-MASTER_ADDR=10.117.192.60
+MASTER_ADDR=10.117.192.77
 MASTER_PORT=6285
 NODE_ID=0
 TORCH_RUN_ARGS=${TORCH_RUN_ARGS:-"--nnodes $NODES --node_rank $NODE_ID --nproc-per-node $GPUS_PER_NODE --master_addr $MASTER_ADDR --master_port $MASTER_PORT"}
