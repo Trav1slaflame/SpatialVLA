@@ -37,6 +37,12 @@ def xarm_sft_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     # debug: check lang values
     # lang_tensor = trajectory["language_instruction"]
     # tf.print("Language instruction:", lang_tensor)
+
+    # debug: check action values
+    # print("check trajectory.keys: ", trajectory.keys())
+    # print("check trajectory.observation.keys: ", trajectory['observation'].keys())
+    # actions = trajectory["action"]
+    # tf.print("acitons:", actions)
     
     return trajectory
 
