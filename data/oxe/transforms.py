@@ -1106,4 +1106,13 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     ### Real Xarm sft datasets
     "lift_the_yellow_pepper_rlds/1.0.0": xarm_sft_dataset_transform,
     "pick_banana_and_place_on_red_plate_rlds/1.0.0": xarm_sft_dataset_transform,
+    "put_carrot_in_the_basket_rlds/1.0.0": xarm_sft_dataset_transform,
+    "put_white_cup_on_pink_cloth_rlds/1.0.0": xarm_sft_dataset_transform,
+    "stack_blue_block_on_red_block_rlds/1.0.0": xarm_sft_dataset_transform,
+    "open_drawer_and_place_bread_rlds/1.0.0": xarm_sft_dataset_transform,
+    "close_the_drawer_rlds/1.0.0": xarm_sft_dataset_transform,
+    "place_the_red_coke_can_on_the_bottom_shelf_rlds/1.0.0": xarm_sft_dataset_transform,
+    "place_the_green_sprite_can_on_the_top_shelf_rlds/1.0.0": xarm_sft_dataset_transform,
+    "place_the_fruit_that_is_closest_to_the_robot_on_the_cutting_board_rlds/1.0.0": xarm_sft_dataset_transform,
+    "put_the_tomato_on_the_plate_that_is_between_the_blue_and_red_car_rlds/1.0.0": xarm_sft_dataset_transform,
 }

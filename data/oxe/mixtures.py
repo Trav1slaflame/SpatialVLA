@@ -20,6 +20,30 @@ OXE_NAMED_MIXTURES: Dict[str, List[Tuple[str, float]]] = {
         ("pick_banana_and_place_on_red_plate_rlds/1.0.0", 1.0),
     ],
     
+    "real_base_tasks": [
+        ("lift_the_yellow_pepper_rlds/1.0.0", 1.0),
+        ("pick_banana_and_place_on_red_plate_rlds/1.0.0", 1.0),
+        ("put_carrot_in_the_basket_rlds/1.0.0", 1.0),
+        ("put_white_cup_on_pink_cloth_rlds/1.0.0", 1.0),
+        ("stack_blue_block_on_red_block_rlds/1.0.0", 1.0),
+        ("open_drawer_and_place_bread_rlds/1.0.0", 1.0),
+        ("close_the_drawer_rlds/1.0.0", 1.0),
+        ("place_the_red_coke_can_on_the_bottom_shelf_rlds/1.0.0", 1.0),
+        ("place_the_green_sprite_can_on_the_top_shelf_rlds/1.0.0", 1.0),
+    ],
+    
+    "real_few_shot": [
+        ("stack_blue_block_on_red_block_rlds/1.0.0", 1.0),
+        ("open_drawer_and_place_bread_rlds/1.0.0", 1.0),
+        ("place_the_red_coke_can_on_the_bottom_shelf_rlds/1.0.0", 1.0),
+        ("place_the_green_sprite_can_on_the_top_shelf_rlds/1.0.0", 1.0),
+    ],
+    
+    "real_spatial_prompts": [
+        ("place_the_fruit_that_is_closest_to_the_robot_on_the_cutting_board_rlds/1.0.0", 1.0),
+        ("put_the_tomato_on_the_plate_that_is_between_the_blue_and_red_car_rlds/1.0.0", 1.0),
+    ],
+    
     # === Bridge V2 Dataset ===
     "toto": [
         # ("bridge_oxe", 1.0),                                  # Version of Bridge V2 in Open-X GCP Bucket
