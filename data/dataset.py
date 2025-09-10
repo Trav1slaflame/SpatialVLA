@@ -58,7 +58,7 @@ class OpenXIterableDataset(IterableDataset):
             load_depth=False,
             load_proprio=False,
             load_language=True,
-            action_proprio_normalization_type=NormalizationType.BOUNDS_Q99,
+            action_proprio_normalization_type=NormalizationType.BOUNDS, # NOTE: set to BOUNDS for abs acttions!!
         )
         self.dataset_num = len(weights)
         self.rlds_config = dict(
